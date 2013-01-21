@@ -9,13 +9,13 @@
 
 			if(typeof overwrite_bool === 'undefined' || overwrite_bool){
 
-				for(item in new_obj){
+				for(var item in new_obj){
 
 					orig_obj[item] = new_obj[item];
 				}
 			} else {
 
-				for(item in new_obj){
+				for(var item in new_obj){
 
 					if(!orig_obj.hasOwnProperty(item)){
 
@@ -251,7 +251,7 @@
 				};
 			} else if (typeof obj === 'object'){
 
-				for(item in obj){
+				for(var item in obj){
 
 					fn(item, obj[item]);
 				};

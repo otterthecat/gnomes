@@ -188,36 +188,37 @@
 	};
 
 // DOM elements
-// this is a pretty crappy selector engine, but is enough
-// for (very) simple queries - ultimately should probably
-// replace with Sizzle (sizzlejs.com) or something similar
+// querySelector/querySelectorAll not valid in IE < 8
+// this will suffice for basic selectors, but would be
+// a good idea to add a few niceties - like context.
 	var _elements = null;
 	var _get_elements = function(str){
 
-		var first_char = str[0];
-
-		if(first_char === "#"){
-
-			_elements =  document.getElementById(str.substr(1));
-			return _elements;
-		}
-
-		if(first_char === "."){
-
-			_elements = document.getElementsByClassName(str.substr(1));
-			return _elements;
-		}
-
-		_elements = document.getElementsByTagName(str);
-		return _elements;
+		var _id_regex = /^#[a-zA-Z0-9_-]+$/;
+		_match = str.match(_id_regex) ? document.querySelector(str) : document.querySelectorAll(str);
+		return _match;
 	};
 
 // define the gnomes object (finally)
 	var gnomes = function(selector_str) {
-
-		if(selector_str){
 		
-			_get_elements(selector_str);
+		if(typeof selector_str === 'string'){
+		
+			var _matches = _get_elements(selector_str);
+
+			var temp_array = [];
+
+			if(_matches.length != undefined){
+				for(var i = 0; i < _matches.length; i += 1){
+
+					temp_array.push(_matches[i]);
+				}
+			} else {
+
+				temp_array.push(_matches);
+			}
+
+			return _merge(temp_array, gnomes.prototype);
 		}
 		return gnomes.do;
 	};
@@ -255,21 +256,26 @@
 
 					fn(item, obj[item]);
 				};
-			} else if (typeof obj === 'function' && _elements.length){
+			} else if (typeof obj === 'function' && this.length){
 
-				for(var i = 0; i < _elements.length; i += 1){
+				for(var i = 0; i < this.length; i += 1){
 
-					obj.call(this, i, _elements[i]);
+					obj.call(this, i, this[i]);
 				};
-			} else if (typeof obj === 'function' && typeof _elements === 'object'){
+			} else if (typeof obj === 'function' && typeof this === 'object'){
 
-				obj(_elements);
+				obj(this);
 			}
 		},
 
 		trim: function(str){
 
 			return _trim_string(str);			
+		},
+
+		el: function(idx){
+
+			return (idx === 'string') ? this[idx] : this[0];
 		}
 	};
 

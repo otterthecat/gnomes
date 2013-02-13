@@ -1,11 +1,13 @@
 // loop through elements sample - think jquery,
 // but with vastly inferior selector handling.
 // seriously, it's weaksauce at the moment...
-_g('.sample').each(function(item, value){
+_g('#title').el().innerHTML = "Fancy Title";
+ 
+var samples = _g('.sample');
+samples.each(function(item, value){
 
 	console.log(item + " : " + value.innerHTML);
 });
-
 
 // Merge sample
 (function(){

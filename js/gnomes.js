@@ -81,22 +81,22 @@
 
 		request_obj.onReadyStateChange = function(){
 
-			if(request_obj.readyState === 1 ){
+			if(request_obj.readyState === 1 ){// loading
 
 				defaults.onLoading();
 			};
 
-			if(request_obj.readyState === 2 ){
+			if(request_obj.readyState === 2 ){// loaded
 
 				defaults.onLoaded();
 			};
 
-			if(request_obj.readyState === 3 ){
+			if(request_obj.readyState === 3 ){// interact
 
 				defaults.onInteract();
 			};
 
-			if(request_obj.readyState === 4 ){
+			if(request_obj.readyState === 4 ){// complete
 
 				if(request_obj.status === 200){
 
@@ -119,7 +119,8 @@
 			// ie check lifted... er... I mean "borrowed" from jQuery's source
 			var ie_regx = /(msie) ([\w.]+)/;
 			var result = ie_regx.exec(navigator.userAgent.toLowerCase());
-			return result.length > 0;
+
+			return result !== null && result.length > 0;
 		},
 
 		is_ie6 : function(){
@@ -275,7 +276,7 @@
 
 		el: function(idx){
 
-			return (idx === 'string') ? this[idx] : this[0];
+			return (typeof idx === 'number') ? this[idx] : this[0];
 		}
 	};
 

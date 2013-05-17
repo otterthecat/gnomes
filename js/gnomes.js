@@ -78,6 +78,7 @@
 
 		request_obj.open(defaults.method, defaults.url, true);
 		request_obj.setRequestHeader('Content-Type', defaults.header);
+		request_obj.setRequestHeader("X-Requested-With", "XMLHttpRequest");
 
 		request_obj.onReadyStateChange = function(){
 
